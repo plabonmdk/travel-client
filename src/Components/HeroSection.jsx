@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 // Import videos
 import video1 from "../assets/vecteezy_ai-generated-green-natural-eco-friendly-tree-and-computer_42383337.mp4";
@@ -80,7 +80,8 @@ const HeroSection = () => {
           onClick={handleAllVehiclesClick}
           className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 md:py-4 md:px-8 rounded-lg transition transform hover:scale-105 shadow-lg"
         >
-          All Vehicles
+          <Link to="all-vehicles">All Vehicles</Link>
+          
         </button>
       </div>
     </section>

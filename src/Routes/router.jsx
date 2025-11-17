@@ -6,11 +6,14 @@ import Register from "../Pages/Register";
 import ForgotPassword from "../Pages/ForgotPassword";
 import AddVehicles from "../Pages/AddVehicles";
 import AllVehicles from "../Pages/AllVehicles";
-import UpdateVehicle from "../Pages/UpdateVehicle";
-import VehicleDetails from "../Pages/VehicleDetails";
+
+
 import MyBookings from "../Pages/MyBookings";
 import MyVehicles from "../Pages/MyVehicles";
 import NotFound from "../Pages/NotFound";
+import VehicleDetails from "../Pages/VehicleDetails";
+import UpdateVehicle from "../Pages/UpdateVehicle"
+
 
 
 export const router = createBrowserRouter([
@@ -44,12 +47,15 @@ export const router = createBrowserRouter([
                 loader: () => fetch("http://localhost:3000/travel")
             },
             {
-                path: "update-vehicles",
-                element: <UpdateVehicle></UpdateVehicle>
+                path: "update-vehicles/:id",
+                element: <UpdateVehicle></UpdateVehicle>,
+                loader:({params}) => fetch(`http://localhost:3000/travel/${params.id}`)
+                
             },
             {
-                path: "vehicle-details",
+                path: "vehicle-details/:id",
                 element: <VehicleDetails></VehicleDetails>
+                
             },
             {
                 path: "my-booking",
