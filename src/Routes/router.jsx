@@ -10,7 +10,7 @@ import AllVehicles from "../Pages/AllVehicles";
 
 import MyBookings from "../Pages/MyBookings";
 import MyVehicles from "../Pages/MyVehicles";
-import NotFound from "../Pages/NotFound";
+
 import VehicleDetails from "../Pages/VehicleDetails";
 import UpdateVehicle from "../Pages/UpdateVehicle"
 
@@ -65,10 +65,7 @@ export const router = createBrowserRouter([
                 path: "my-vehicles",
                 element: <MyVehicles></MyVehicles>
             },
-            {
-                path: "not-found",
-                element: <NotFound></NotFound>
-            },
+            
             
         ]
     }

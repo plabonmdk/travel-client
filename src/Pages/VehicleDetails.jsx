@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, useNavigate, Link } from "react-router";
+import Swal from "sweetalert2";
+
 
 const VehicleDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  
   const [travel, setTravel] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,14 +17,15 @@ const VehicleDetails = () => {
         setTravel(data.result);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [id]);
 
   if (loading) {
     return (
-      <div className="text-center mt-10 text-xl font-semibold">
-        Loading...
-      </div>
+      <div className="text-center mt-10 text-xl font-semibold">Loading...</div>
     );
   }
 
@@ -32,30 +37,72 @@ const VehicleDetails = () => {
     );
   }
 
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/travel/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              Swal.fire(
+                "Deleted!",
+                "The vehicle has been deleted.",
+                "success"
+              );
+              navigate("/all-vehicles");
+            } else {
+              Swal.fire(
+                "Error!",
+                "Something went wrong. Please try again.",
+                "error"
+              );
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Please try again.",
+              "error"
+            );
+          });
+      }
+    });
+  };
+
   return (
-    <div className="max-w-5xl min-h-screen mx-auto p-4 md:p-6 lg:p-8 ">
+    <div className="max-w-5xl min-h-screen mx-auto p-4 md:p-6 lg:p-8">
       <div className="card mt-5 bg-base-100 shadow-xl border border-gray-200 rounded-2xl overflow-hidden">
-        
         <div className="flex flex-col md:flex-row gap-8 p-6 md:p-8">
-          
           <div className="shrink-0 w-full md:w-1/2">
             <img
-              src={travel.coverImage}
-              alt={travel.vehicleName}
+              src={travel.coverImage || ""}
+              alt={travel.vehicleName || "Vehicle"}
               className="w-full object-cover rounded-xl shadow-md"
             />
           </div>
 
           <div className="flex flex-col justify-center space-y-4 w-full md:w-1/2">
-            
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
               {travel.vehicleName}
             </h1>
 
             <div className="flex flex-wrap gap-3">
-              <div className="badge badge-lg badge-outline text-blue-600 border-blue-600 font-medium">
-                {travel.category}
-              </div>
+              {travel.category && (
+                <div className="badge badge-lg badge-outline text-blue-600 border-blue-600 font-medium">
+                  {travel.category}
+                </div>
+              )}
 
               {travel.categories && (
                 <div className="badge badge-lg badge-outline text-green-600 border-green-600 font-medium">
@@ -63,9 +110,11 @@ const VehicleDetails = () => {
                 </div>
               )}
 
-              <div className="badge badge-lg badge-outline text-purple-600 border-purple-600 font-medium">
-                {travel.availability}
-              </div>
+              {travel.availability && (
+                <div className="badge badge-lg badge-outline text-purple-600 border-purple-600 font-medium">
+                  {travel.availability}
+                </div>
+              )}
             </div>
 
             <p className="text-gray-600 leading-relaxed text-base md:text-lg">
@@ -73,10 +122,21 @@ const VehicleDetails = () => {
             </p>
 
             <div className="space-y-2 text-gray-700">
-              <p><strong>Owner:</strong> {travel.owner}</p>
-              <p><strong>Location:</strong> {travel.location}</p>
-              <p><strong>Price Per Day:</strong> ${travel.pricePerDay}</p>
-              <p><strong>Posted On:</strong> {new Date(travel.createdAt).toLocaleDateString()}</p>
+              <p>
+                <strong>Owner:</strong> {travel.owner}
+              </p>
+              <p>
+                <strong>Location:</strong> {travel.location}
+              </p>
+              <p>
+                <strong>Price Per Day:</strong> ${travel.pricePerDay}
+              </p>
+              <p>
+                <strong>Posted On:</strong>{" "}
+                {travel.createdAt
+                  ? new Date(travel.createdAt).toLocaleDateString()
+                  : "N/A"}
+              </p>
             </div>
 
             <div className="flex gap-3 mt-6">
@@ -87,18 +147,17 @@ const VehicleDetails = () => {
                 Update Vehicle
               </Link>
 
-              <button className="btn btn-secondary rounded-full">
-                Book Now
-              </button>
+              <button className="btn btn-secondary rounded-full">Book Now</button>
 
-              <button className="btn btn-outline rounded-full border-gray-300 hover:border-pink-500 hover:text-pink-600">
+              <button
+                onClick={handleDelete}
+                className="btn btn-outline rounded-full border-gray-300 hover:border-pink-500 hover:text-pink-600"
+              >
                 Delete
               </button>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
   );
