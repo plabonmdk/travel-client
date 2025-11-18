@@ -13,6 +13,7 @@ import MyVehicles from "../Pages/MyVehicles";
 
 import VehicleDetails from "../Pages/VehicleDetails";
 import UpdateVehicle from "../Pages/UpdateVehicle"
+import Profile from "../Pages/Profile";
 
 
 
@@ -23,7 +24,8 @@ export const router = createBrowserRouter([
         children: [
             {
                 index:true, 
-                element: <Home></Home>
+                element: <Home></Home>,
+                loader: () => fetch("http://localhost:3000/latest-travel")
             },
             {
                 path: "/login",
@@ -49,12 +51,13 @@ export const router = createBrowserRouter([
             {
                 path: "update-vehicles/:id",
                 element: <UpdateVehicle></UpdateVehicle>,
-                loader:({params}) => fetch(`http://localhost:3000/travel/${params.id}`)
+                
                 
             },
             {
                 path: "vehicle-details/:id",
-                element: <VehicleDetails></VehicleDetails>
+                element: <VehicleDetails></VehicleDetails>,
+                
                 
             },
             {
@@ -64,6 +67,10 @@ export const router = createBrowserRouter([
             {
                 path: "my-vehicles",
                 element: <MyVehicles></MyVehicles>
+            },
+            {
+                path: "/profile",
+                element: <Profile></Profile>
             },
             
             

@@ -1,11 +1,57 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthenticationContext } from '../contexts/AuthContext';
+import Swal from 'sweetalert2';
 
 const MyBookings = () => {
-    return (
-        <div>
-            tis MyBookings
-        </div>
-    );
+  const { user } = useContext(AuthenticationContext);
+  // console.log(user)
+  const [travel, setTravel] = useState([]);
+  // console.log(travel)
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchBookings = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/my-booking?email=${user.email}`, {
+          headers: {
+            authorization: `Bearer ${user?.accessToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await res.json();
+        setTravel(data.result);
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to fetch vehicle data.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookings();
+  }, [user]);
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <div className="grid grid-cols-3 lg:grid-cols-4 gap-3">
+        {travel.map((travel) => (
+          <ModelCard key={travel._id} travel={travel} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default MyBookings;

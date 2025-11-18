@@ -16,6 +16,8 @@ const VehicleCard = ({ travel }) => {
     availability,
     description,
     coverImage,
+    userEmail
+
   } = travel;
 
   return (
@@ -51,6 +53,8 @@ const VehicleCard = ({ travel }) => {
         <h2 className="text-xl font-bold text-gray-800">{vehicleName}</h2>
 
         <p className="text-sm text-gray-600">Owner: {owner}</p>
+
+        <h1 className="text-sm text-gray-600">{userEmail}</h1>
 
         {/* Category */}
         <div className="flex items-center gap-2 text-gray-700 text-sm">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { AuthenticationContext } from "./AuthenticationContext";
+
 import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -13,13 +13,13 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { AuthenticationContext } from "./AuthContext";
-// import { auth } from "../firebase/FirebaseConfig";
+
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null) ;
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -31,10 +31,10 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // All your auth functions...
+ 
   const authInfo = {
     user,
-    loading, // <-- provide loading to context
+    loading, 
     setUser,
     createUserWithEmailAndPasswordFunc: (email, password) =>
       createUserWithEmailAndPassword(auth, email, password),

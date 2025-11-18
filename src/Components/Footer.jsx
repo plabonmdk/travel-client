@@ -37,6 +37,7 @@ const Footer = () => {
             <li><Link to="/resources" className="text-gray-100 hover:text-yellow-300">Resources</Link></li>
           </ul>
         </div>
+       
 
         {/* Community */}
         <div>

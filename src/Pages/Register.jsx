@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import bgImage from "../assets/Untitled design (32).png";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { updateProfile, signOut } from "firebase/auth";
 import Swal from "sweetalert2";
 
-// import { auth } from "../firebase/FirebaseConfig"; 
 import { AuthenticationContext } from "../contexts/AuthContext";
 import { auth } from "../firebase/firebase";
+
 const Register = () => {
   const [show, setShow] = useState(false);
   const { createUserWithEmailAndPasswordFunc } = useContext(AuthenticationContext);
@@ -47,16 +46,16 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPasswordFunc(email, password);
       const user = userCredential.user;
 
-      //  Update profile
+      // Update profile
       await updateProfile(user, {
         displayName: name,
         photoURL: photo,
       });
 
-      //  Immediately sign out the new user so they aren't logged in
+      // Sign out immediately
       await signOut(auth);
 
-      //  Success toast
+      // Success toast
       Swal.fire({
         icon: "success",
         title: `Welcome, ${name}!`,
@@ -71,7 +70,7 @@ const Register = () => {
       });
 
       form.reset();
-      navigate("/sing_in"); 
+      navigate("/login"); // সরাসরি login page এ নিয়ে যাবে
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -82,68 +81,63 @@ const Register = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center relative bg-cover bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <div className="absolute inset-0 bg-black/20"></div>
-
-      <div className="relative z-10 w-full max-w-md bg-white/10 backdrop-blur-md shadow-2xl rounded-2xl border border-white/30 p-8">
-        <h1 className="text-3xl font-bold text-center mb-2 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="relative w-full max-w-md bg-white shadow-2xl rounded-2xl p-8">
+        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">
           Create an Account
         </h1>
-        <p className="text-center text-gray-200 mb-6">
+        <p className="text-center text-gray-600 mb-6">
           Join us and start your journey today!
         </p>
 
         <form onSubmit={handleRegister}>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text text-white font-medium">Full Name</span>
+              <span className="label-text text-gray-700 font-medium">Full Name</span>
             </label>
             <input
               type="text"
               name="name"
               placeholder="Enter your full name"
-              className="input input-bordered w-full bg-white/80 text-gray-800"
+              className="input input-bordered w-full bg-gray-100 text-gray-800"
               required
             />
           </div>
 
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text text-white font-medium">Photo URL</span>
+              <span className="label-text text-gray-700 font-medium">Photo URL</span>
             </label>
             <input
               type="text"
               name="photo"
               placeholder="Enter your photo URL"
-              className="input input-bordered w-full bg-white/80 text-gray-800"
+              className="input input-bordered w-full bg-gray-100 text-gray-800"
             />
           </div>
 
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text text-white font-medium">Email</span>
+              <span className="label-text text-gray-700 font-medium">Email</span>
             </label>
             <input
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="input input-bordered w-full bg-white/80 text-gray-800"
+              className="input input-bordered w-full bg-gray-100 text-gray-800"
               required
             />
           </div>
 
           <div className="form-control mb-4 relative">
             <label className="label">
-              <span className="label-text text-white font-medium">Password</span>
+              <span className="label-text text-gray-700 font-medium">Password</span>
             </label>
             <input
               type={show ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
-              className="input input-bordered w-full bg-white/80 text-gray-800"
+              className="input input-bordered w-full bg-gray-100 text-gray-800"
               required
             />
             <div
@@ -159,11 +153,11 @@ const Register = () => {
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-200 mt-5">
+        <p className="text-center text-sm text-gray-600 mt-5">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="link link-hover text-yellow-300 font-medium"
+            className="link link-hover text-indigo-600 font-medium"
           >
             Login here
           </Link>
