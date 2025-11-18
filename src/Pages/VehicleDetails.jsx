@@ -48,12 +48,12 @@ const VehicleDetails = () => {
 
       const data = await res.json();
 console.log(data)
-      // if (data.success) {
-      //   Swal.fire("Success", "Booking completed successfully!", "success");
-      //   navigate("/my-booking");
-      // } else {
-      //   Swal.fire("Error", "Booking failed. Please try again.", "error");
-      // }
+      if (data.success) {
+        Swal.fire("Success", "Booking completed successfully!", "success");
+        navigate("/my-booking");
+      } else {
+        Swal.fire("Error", "Booking failed. Please try again.", "error");
+      }
     } catch (err) {
       console.error("Booking failed:", err.massage);
       Swal.fire("Error", "Booking failed. Please try again.", "error");

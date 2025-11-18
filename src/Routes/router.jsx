@@ -14,6 +14,8 @@ import MyVehicles from "../Pages/MyVehicles";
 import VehicleDetails from "../Pages/VehicleDetails";
 import UpdateVehicle from "../Pages/UpdateVehicle"
 import Profile from "../Pages/Profile";
+import Error from "../Pages/Error"
+import PrivateRoute from "../Components/PrivateRoute";
 
 
 
@@ -21,6 +23,7 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <App></App>,
+        errorElement:<Error></Error>,
         children: [
             {
                 index:true, 
@@ -41,7 +44,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "add-vehicles",
-                element: <AddVehicles></AddVehicles>
+                element: <PrivateRoute><AddVehicles></AddVehicles></PrivateRoute>
             },
             {
                 path: "all-vehicles",
@@ -50,23 +53,23 @@ export const router = createBrowserRouter([
             },
             {
                 path: "update-vehicles/:id",
-                element: <UpdateVehicle></UpdateVehicle>,
+                element: <PrivateRoute><UpdateVehicle></UpdateVehicle></PrivateRoute>,
                 
                 
             },
             {
                 path: "vehicle-details/:id",
-                element: <VehicleDetails></VehicleDetails>,
+                element: <PrivateRoute><VehicleDetails></VehicleDetails></PrivateRoute>,
                 
                 
             },
             {
                 path: "my-booking",
-                element: <MyBookings></MyBookings>
+                element: <PrivateRoute><MyBookings></MyBookings></PrivateRoute>
             },
             {
                 path: "my-vehicles",
-                element: <MyVehicles></MyVehicles>
+                element: <PrivateRoute><MyVehicles></MyVehicles></PrivateRoute>
             },
             {
                 path: "/profile",

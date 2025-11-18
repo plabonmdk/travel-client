@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthenticationContext } from '../contexts/AuthContext';
 import VehicleCard from '../Components/VehicleCard';
+import Loading from '../Components/Loading';
+import { div } from 'framer-motion/client';
 
 const MyVehicles = () => {
     const { user } = useContext(AuthenticationContext);
@@ -24,7 +26,7 @@ const MyVehicles = () => {
     }, [user?.email]);
 
     if (loading) {
-        return <h1>Loading .......</h1>;
+        return <span className="flex justify-center items-center min-h-[60vh]"><Loading></Loading></span>;
     }
 
     if (travel.length === 0) {
@@ -32,8 +34,8 @@ const MyVehicles = () => {
     }
 
     return (
-        <div className="p-4">
-            <div className="grid mt-15 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="p-4 ">
+            <div className="max-w-7xl  mx-auto grid mt-15  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {travel.result.map((travel) => (
                     <VehicleCard key={travel._id} travel={travel} />
                 ))}

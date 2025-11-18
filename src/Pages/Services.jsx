@@ -36,7 +36,7 @@ export default function Services() {
     }
   ];
 
-  // Animation variants
+  
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 

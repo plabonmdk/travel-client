@@ -2,9 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import bgImage from "../assets/Untitled design (32).png"
 import { AuthenticationContext } from "../contexts/AuthContext";
-// import { AuthenticationContext } from "../Context/AuthenticationContext";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -22,7 +20,6 @@ const Login = () => {
     setUser,
   } = useContext(AuthenticationContext);
 
-  //  Google Sign In Fixed
   const handleGoogleSignIn = async () => {
     try {
       const res = await signInWithGoogleFunc();
@@ -50,7 +47,6 @@ const Login = () => {
     }
   };
 
-  // GitHub Sign In
   const handleGithubSignIn = async () => {
     try {
       const res = await signInWithGithubFunc();
@@ -78,7 +74,6 @@ const Login = () => {
     }
   };
 
-  // Email/Password Sign In
   const handleSignIn = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -112,7 +107,6 @@ const Login = () => {
     }
   };
 
-  // Sign Out
   const handleSignOut = async () => {
     try {
       await signOutUserFunc();
@@ -133,40 +127,26 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-md p-8 bg-white/90 backdrop-blur-md border border-gray-200 rounded-3xl shadow-2xl">
 
-      <div className="relative z-10 w-full max-w-md p-8 bg-white/20 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl">
-        <h1 className="text-4xl font-bold text-center text-white drop-shadow mb-3">
+        <h1 className="text-4xl font-bold text-center text-gray-900 drop-shadow mb-3">
           {user ? "Welcome " : "Welcome Back "}
         </h1>
 
         {user ? (
           <div className="text-center space-y-4">
-            <p className="text-green-200 font-semibold">
+            <p className="text-green-600 font-semibold">
               Logged in as {user.email}
             </p>
 
-            {/*  Fixed Profile Image with fallback */}
             <img
-              src={
-                user?.photoURL && user.photoURL !== ""
-                  ? user.photoURL
-                  : "https://i.ibb.co/4pDNDk1/avatar.png"
-              }
+              src={user?.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
               alt="User Avatar"
-              className="mx-auto mt-3 w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover"
-              onError={(e) => (e.target.src = "https://i.ibb.co/4pDNDk1/avatar.png")}
+              className="mx-auto mt-3 w-24 h-24 rounded-full border-4 border-gray-300 shadow-lg object-cover"
             />
 
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-gray-900">
               {user?.displayName || "Anonymous User"}
             </h2>
 
@@ -179,30 +159,30 @@ const Login = () => {
           </div>
         ) : (
           <>
-            <p className="text-center text-gray-200 mb-6">
+            <p className="text-center text-gray-700 mb-6">
               Sign in to continue to your account
             </p>
 
             <form onSubmit={handleSignIn} className="space-y-4">
               <div>
-                <label className="block text-gray-100 mb-1">Email</label>
+                <label className="block text-gray-900 mb-1">Email</label>
                 <input
                   type="email"
                   name="email"
                   placeholder="Enter your email"
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-3 rounded-lg bg-white/80 text-gray-900 outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full p-3 rounded-lg bg-gray-100 text-gray-900 outline-none focus:ring-2 focus:ring-indigo-400"
                   required
                 />
               </div>
 
               <div className="relative">
-                <label className="block text-gray-100 mb-1">Password</label>
+                <label className="block text-gray-900 mb-1">Password</label>
                 <input
                   type={show ? "text" : "password"}
                   name="password"
                   placeholder="Enter your password"
-                  className="w-full p-3 rounded-lg bg-white/80 text-gray-900 outline-none focus:ring-2 focus:ring-indigo-400 pr-10"
+                  className="w-full p-3 rounded-lg bg-gray-100 text-gray-900 outline-none focus:ring-2 focus:ring-indigo-400 pr-10"
                   required
                 />
                 <div
@@ -215,7 +195,7 @@ const Login = () => {
                 <div className="text-right mt-1">
                   <Link
                     to="/forgot-password"
-                    className="text-sm font-semibold text-indigo-300 hover:text-indigo-400"
+                    className="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
                   >
                     Forgot password?
                   </Link>
@@ -224,7 +204,7 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-purple-700 hover:to-pink-600 transition-all duration-300"
+                className="w-full py-3 border border-blue-500 text-blue-500 font-semibold rounded-lg shadow-md hover:bg-blue-500 hover:text-white transition-all duration-300"
               >
                 Sign In
               </button>
@@ -232,13 +212,13 @@ const Login = () => {
 
             <div className="flex items-center my-5">
               <hr className="flex-grow border-gray-400" />
-              <span className="text-gray-200 px-3">OR</span>
+              <span className="text-gray-700 px-3">OR</span>
               <hr className="flex-grow border-gray-400" />
             </div>
 
             <button
               onClick={handleGoogleSignIn}
-              className="w-full mb-2 bg-white/70 hover:bg-white flex justify-center items-center gap-2 py-2 rounded-lg shadow"
+              className="w-full mb-2 bg-gray-100 flex justify-center items-center gap-2 py-2 rounded-lg shadow hover:bg-gray-200"
             >
               <img
                 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
@@ -250,7 +230,7 @@ const Login = () => {
 
             <button
               onClick={handleGithubSignIn}
-              className="w-full bg-white/70 hover:bg-white flex justify-center items-center gap-2 py-2 rounded-lg shadow"
+              className="w-full bg-gray-100 flex justify-center items-center gap-2 py-2 rounded-lg shadow hover:bg-gray-200"
             >
               <img
                 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
@@ -260,11 +240,11 @@ const Login = () => {
               Continue with GitHub
             </button>
 
-            <p className="text-center text-sm text-gray-200 mt-5">
+            <p className="text-center text-sm text-gray-700 mt-5">
               Don’t have an account?{" "}
               <Link
                 to="/register"
-                className="text-yellow-300 link link-hover font-medium"
+                className="text-indigo-600 font-medium hover:text-indigo-800"
               >
                 Register now
               </Link>

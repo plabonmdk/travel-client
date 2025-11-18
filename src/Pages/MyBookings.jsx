@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthenticationContext } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
 
+import VehicleCard from '../Components/VehicleCard';
+import Loading from '../Components/Loading';
+
 const MyBookings = () => {
   const { user } = useContext(AuthenticationContext);
   // console.log(user)
@@ -41,13 +44,13 @@ const MyBookings = () => {
     fetchBookings();
   }, [user]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <span className="flex justify-center items-center min-h-[60vh]"><Loading></Loading></span>;
 
   return (
     <div>
       <div className="grid grid-cols-3 lg:grid-cols-4 gap-3">
         {travel.map((travel) => (
-          <ModelCard key={travel._id} travel={travel} />
+          <VehicleCard key={travel._id} travel={travel} />
         ))}
       </div>
     </div>

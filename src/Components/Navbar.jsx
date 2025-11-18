@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AuthenticationContext } from "../contexts/AuthContext";
-import { Link, NavLink } from "react-router-dom"; // react-router-dom correct import
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const { user, signOutUserFunc } = useContext(AuthenticationContext);
@@ -17,80 +17,35 @@ const Navbar = () => {
     }
   };
 
+  const linkClass = ({ isActive }) =>
+    `transition-colors duration-200 ${
+      isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-500"
+    }`;
+
   const navLinks = (
     <>
       <li>
-        <NavLink
-          to="/"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `transition-colors duration-200 ${
-              isActive
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-blue-500"
-            }`
-          }
-        >
+        <NavLink to="/" onClick={() => setOpen(false)} className={linkClass}>
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/all-vehicles"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `transition-colors duration-200 ${
-              isActive
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-blue-500"
-            }`
-          }
-        >
+        <NavLink to="/all-vehicles" onClick={() => setOpen(false)} className={linkClass}>
           All Vehicles
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/add-vehicles"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `transition-colors duration-200 ${
-              isActive
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-blue-500"
-            }`
-          }
-        >
+        <NavLink to="/add-vehicles" onClick={() => setOpen(false)} className={linkClass}>
           Add Vehicle
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/my-vehicles"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `transition-colors duration-200 ${
-              isActive
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-blue-500"
-            }`
-          }
-        >
+        <NavLink to="/my-vehicles" onClick={() => setOpen(false)} className={linkClass}>
           My Vehicles
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/my-booking"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `transition-colors duration-200 ${
-              isActive
-                ? "text-blue-600 font-semibold"
-                : "text-gray-700 hover:text-blue-500"
-            }`
-          }
-        >
+        <NavLink to="/my-booking" onClick={() => setOpen(false)} className={linkClass}>
           My Bookings
         </NavLink>
       </li>
@@ -104,7 +59,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="text-2xl font-bold text-blue-600 hover:text-blue-700"
+          className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
         >
           TravelEase
         </Link>
@@ -125,19 +80,16 @@ const Navbar = () => {
                   className="w-10 h-10 rounded-full border object-cover"
                 />
                 <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-white shadow-md border rounded-lg px-4 py-4
-                  opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-40 text-center">
+                  opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 w-44 text-center">
                   <img
                     src={user.photoURL || "https://i.ibb.co/YTbR9Kp/user.png"}
                     alt="Profile"
                     className="w-14 h-14 rounded-full border mx-auto mb-2 object-cover"
                   />
-                  <p className="font-semibold text-gray-800 mb-1">
+                  <p className="font-semibold text-gray-800 mb-1 truncate">
                     {user.displayName || user.email}
                   </p>
-                  <Link
-                    to="/profile"
-                    className="text-blue-600 hover:underline text-sm"
-                  >
+                  <Link to="/profile" className="text-blue-600 hover:underline text-sm">
                     View Profile
                   </Link>
                 </div>
@@ -154,13 +106,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white"
+                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition"
               >
                 Register
               </Link>
@@ -194,13 +146,13 @@ const Navbar = () => {
                   src={user.photoURL || "https://i.ibb.co/YTbR9Kp/user.png"}
                   className="w-14 h-14 rounded-full border object-cover"
                 />
-                <p className="font-semibold">{user.displayName || user.email}</p>
+                <p className="font-semibold truncate">{user.displayName || user.email}</p>
                 <span className="text-blue-600 text-sm hover:underline">View Profile</span>
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                className="bg-red-500 text-white px-4 py-2 rounded-lg mt-2 w-full"
               >
                 Logout
               </button>
@@ -210,14 +162,14 @@ const Navbar = () => {
               <Link
                 to="/login"
                 onClick={() => setOpen(false)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full text-center"
               >
                 Login
               </Link>
               <Link
                 to="/register"
                 onClick={() => setOpen(false)}
-                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg"
+                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg w-full text-center mt-2"
               >
                 Register
               </Link>
