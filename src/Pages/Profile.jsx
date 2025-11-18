@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { AuthenticationContext } from "../contexts/AuthContext";
 
 const Profile = () => {
-  const { user, updateProfileFunc } = useContext(AuthenticationContext);
+  const { user, updateProfileFunc, setUser } = useContext(AuthenticationContext);
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
   const [loading, setLoading] = useState(false);
@@ -15,8 +15,11 @@ const Profile = () => {
     try {
       if (!user) throw new Error("No user logged in");
 
-      // Update profile in Firebase and local context
+      // Update profile in Firebase
       await updateProfileFunc(displayName, photoURL);
+
+      // Update local context user immediately
+      setUser({ ...user, displayName, photoURL });
 
       Swal.fire({
         icon: "success",
@@ -37,7 +40,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg ">
+    <div className="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl mt-20 font-bold text-center mb-6">My Profile</h2>
 
       <div className="flex flex-col items-center gap-2 mb-6">
