@@ -48,7 +48,7 @@ const MyBookings = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="max-w-7xl mx-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3">
         {travel.map((travel) => (
           <VehicleCard  key={travel._id} travel={travel} />
         ))}
