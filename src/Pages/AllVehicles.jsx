@@ -15,7 +15,7 @@ const AllVehicles = () => {
 
     setLoading(true);
 
-    fetch(`http://localhost:3000/search?search=${search_text}`)
+    fetch(`https://travel-server-roan.vercel.app/search?search=${search_text}`)
       .then((res) => res.json())
       .then((data) => {
         setModels(data.result || []);
@@ -24,7 +24,6 @@ const AllVehicles = () => {
       .catch(() => setLoading(false));
   };
 
- 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[70vh]">
@@ -73,7 +72,6 @@ const AllVehicles = () => {
         <button className="btn btn-secondary rounded-full">Search</button>
       </form>
 
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {models.length === 0 ? (
           <Error />

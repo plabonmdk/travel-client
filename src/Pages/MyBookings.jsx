@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthenticationContext } from '../contexts/AuthContext';
-import Swal from 'sweetalert2';
+import React, { useContext, useEffect, useState } from "react";
+import { AuthenticationContext } from "../contexts/AuthContext";
+import Swal from "sweetalert2";
 
-import VehicleCard from '../Components/VehicleCard';
-import Loading from '../Components/Loading';
+import VehicleCard from "../Components/VehicleCard";
+import Loading from "../Components/Loading";
 
 const MyBookings = () => {
   const { user } = useContext(AuthenticationContext);
@@ -17,14 +17,17 @@ const MyBookings = () => {
 
     const fetchBookings = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/my-booking?email=${user.email}`, {
-          headers: {
-            authorization: `Bearer ${user?.accessToken}`,
-          },
-        });
+        const res = await fetch(
+          `https://travel-server-roan.vercel.app/my-booking?email=${user.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${user?.accessToken}`,
+            },
+          }
+        );
 
         if (!res.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const data = await res.json();
@@ -44,13 +47,18 @@ const MyBookings = () => {
     fetchBookings();
   }, [user]);
 
-  if (loading) return <span className="flex  justify-center items-center min-h-[60vh]"><Loading></Loading></span>;
+  if (loading)
+    return (
+      <span className="flex  justify-center items-center min-h-[60vh]">
+        <Loading></Loading>
+      </span>
+    );
 
   return (
     <div>
       <div className="max-w-7xl mx-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3">
         {travel.map((travel) => (
-          <VehicleCard  key={travel._id} travel={travel} />
+          <VehicleCard key={travel._id} travel={travel} />
         ))}
       </div>
     </div>

@@ -10,7 +10,12 @@ const fieldConfig = [
   { name: "category", label: "Category", type: "text" },
   { name: "pricePerDay", label: "Price Per Day", type: "number" },
   { name: "location", label: "Location", type: "text" },
-  { name: "availability", label: "Availability", type: "select", options: ["Available", "Booked"] },
+  {
+    name: "availability",
+    label: "Availability",
+    type: "select",
+    options: ["Available", "Booked"],
+  },
   { name: "description", label: "Description", type: "textarea" },
   { name: "coverImage", label: "Cover Image URL", type: "text" },
   { name: "categories", label: "Categories", type: "text" },
@@ -28,11 +33,14 @@ const UpdateVehicle = () => {
 
     const fetchVehicle = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/travel/${id}`, {
-          headers: {
-            authorization: `Bearer ${user?.accessToken}`,
-          },
-        });
+        const res = await fetch(
+          `https://travel-server-roan.vercel.app/travel/${id}`,
+          {
+            headers: {
+              authorization: `Bearer ${user?.accessToken}`,
+            },
+          }
+        );
 
         const data = await res.json();
         setTravel(data.result);
@@ -61,11 +69,14 @@ const UpdateVehicle = () => {
     });
 
     try {
-      const res = await fetch(`http://localhost:3000/travel/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `https://travel-server-roan.vercel.app/travel/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await res.json();
 
@@ -78,11 +89,9 @@ const UpdateVehicle = () => {
           showConfirmButton: false,
         });
 
-      
         setTimeout(() => {
           navigate(`/vehicle-details/${id}`);
         }, 1500);
-
       } else {
         Swal.fire({
           icon: "error",

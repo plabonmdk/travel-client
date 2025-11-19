@@ -17,11 +17,14 @@ const VehicleDetails = () => {
 
     const fetchVehicle = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/travel/${id}`, {
-          headers: {
-            authorization: `Bearer ${user.accessToken}`,
-          },
-        });
+        const res = await fetch(
+          `https://travel-server-roan.vercel.app/travel/${id}`,
+          {
+            headers: {
+              authorization: `Bearer ${user.accessToken}`,
+            },
+          }
+        );
         const data = await res.json();
         setTravel(data.result);
       } catch (err) {
@@ -41,11 +44,14 @@ const VehicleDetails = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/booking/${travel._id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...travel, userEmail: user.email }),
-      });
+      const res = await fetch(
+        `https://travel-server-roan.vercel.app/booking/${travel._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...travel, userEmail: user.email }),
+        }
+      );
 
       const data = await res.json();
 
@@ -73,26 +79,45 @@ const VehicleDetails = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:3000/travel/${id}`, {
-            method: "DELETE",
-          });
+          const res = await fetch(
+            `https://travel-server-roan.vercel.app/travel/${id}`,
+            {
+              method: "DELETE",
+            }
+          );
           const data = await res.json();
           if (data.success) {
             Swal.fire("Deleted!", "The vehicle has been deleted.", "success");
             navigate("/all-vehicles");
           } else {
-            Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Please try again.",
+              "error"
+            );
           }
         } catch (err) {
           console.error("Delete failed:", err);
-          Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+          Swal.fire(
+            "Error!",
+            "Something went wrong. Please try again.",
+            "error"
+          );
         }
       }
     });
   };
 
-  if (loading) return <div className="text-center mt-10 text-xl font-semibold"><Loading></Loading></div>;
-  if (!travel) return <div className="text-center text-xl text-red-600">No vehicle found!</div>;
+  if (loading)
+    return (
+      <div className="text-center mt-10 text-xl font-semibold">
+        <Loading></Loading>
+      </div>
+    );
+  if (!travel)
+    return (
+      <div className="text-center text-xl text-red-600">No vehicle found!</div>
+    );
 
   return (
     <div className="max-w-5xl mx-auto p-4 md:p-6 lg:p-8">
@@ -107,7 +132,9 @@ const VehicleDetails = () => {
           </div>
 
           <div className="flex flex-col justify-center space-y-4 w-full md:w-1/2">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{travel.vehicleName}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+              {travel.vehicleName}
+            </h1>
 
             <div className="flex flex-wrap gap-3">
               {travel.category && (
@@ -122,13 +149,26 @@ const VehicleDetails = () => {
               )}
             </div>
 
-            <p className="text-gray-600 leading-relaxed text-base md:text-lg">{travel.description}</p>
+            <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+              {travel.description}
+            </p>
 
             <div className="space-y-2 text-gray-700">
-              <p><strong>Owner:</strong> {travel.owner}</p>
-              <p><strong>Location:</strong> {travel.location}</p>
-              <p><strong>Price Per Day:</strong> ${travel.pricePerDay}</p>
-              <p><strong>Posted On:</strong> {travel.createdAt ? new Date(travel.createdAt).toLocaleDateString() : "N/A"}</p>
+              <p>
+                <strong>Owner:</strong> {travel.owner}
+              </p>
+              <p>
+                <strong>Location:</strong> {travel.location}
+              </p>
+              <p>
+                <strong>Price Per Day:</strong> ${travel.pricePerDay}
+              </p>
+              <p>
+                <strong>Posted On:</strong>{" "}
+                {travel.createdAt
+                  ? new Date(travel.createdAt).toLocaleDateString()
+                  : "N/A"}
+              </p>
             </div>
 
             <div className="flex gap-3 mt-6">
@@ -139,11 +179,17 @@ const VehicleDetails = () => {
                 Update Vehicle
               </Link>
 
-              <button onClick={handleBooking} className="btn btn-secondary rounded-full">
+              <button
+                onClick={handleBooking}
+                className="btn btn-secondary rounded-full"
+              >
                 Book Now
               </button>
 
-              <button onClick={handleDelete} className="btn btn-outline rounded-full border-gray-300 hover:border-pink-500 hover:text-pink-600">
+              <button
+                onClick={handleDelete}
+                className="btn btn-outline rounded-full border-gray-300 hover:border-pink-500 hover:text-pink-600"
+              >
                 Delete
               </button>
             </div>

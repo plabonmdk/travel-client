@@ -19,7 +19,6 @@ const AddVehicles = () => {
     addedAt: "",
   });
 
-  
   useEffect(() => {
     const now = new Date().toISOString();
     if (user?.email) {
@@ -47,12 +46,14 @@ const AddVehicles = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/travel", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
-        
-      });
+      const response = await fetch(
+        "https://travel-server-roan.vercel.app/travel",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add vehicle. Please try again.");
@@ -65,7 +66,6 @@ const AddVehicles = () => {
         confirmButtonColor: "#3085d6",
       });
 
-      
       setFormData({
         vehicleName: "",
         owner: "",
@@ -103,7 +103,6 @@ const AddVehicles = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Vehicle Name
@@ -119,7 +118,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Owner Name
@@ -135,7 +133,6 @@ const AddVehicles = () => {
             />
           </div>
 
-         
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Category
@@ -155,7 +152,6 @@ const AddVehicles = () => {
             </select>
           </div>
 
-         
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Price Per Day ($)
@@ -171,7 +167,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Location
@@ -187,7 +182,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Availability
@@ -205,7 +199,6 @@ const AddVehicles = () => {
             </select>
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Description
@@ -221,7 +214,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Cover Image URL
@@ -237,7 +229,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <div>
             <label className="block font-semibold text-gray-700 mb-1">
               Categories
@@ -253,7 +244,6 @@ const AddVehicles = () => {
             />
           </div>
 
-          
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all"
