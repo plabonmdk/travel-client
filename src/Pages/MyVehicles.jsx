@@ -6,7 +6,7 @@ import { div } from 'framer-motion/client';
 
 const MyVehicles = () => {
     const { user } = useContext(AuthenticationContext);
-    console.log(user)
+    
     const [travel, setTravel] = useState([]);
     const [loading, setLoading] = useState(true);
 

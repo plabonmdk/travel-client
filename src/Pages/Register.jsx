@@ -16,9 +16,14 @@ const Register = () => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value.trim();
-    const photo = form.photo.value.trim();
+    let photo = form.photo.value.trim();
     const email = form.email.value.trim();
     const password = form.password.value;
+
+    // Default photo if empty
+    if (!photo || photo.length < 5) {
+      photo = "https://i.ibb.co/r49c8T1/default-user.png";
+    }
 
     // Password validation
     const passwordRegex =
@@ -42,24 +47,26 @@ const Register = () => {
     }
 
     try {
-      // Create user
+    
       const userCredential = await createUserWithEmailAndPasswordFunc(email, password);
       const user = userCredential.user;
 
-      // Update profile
+      
       await updateProfile(user, {
         displayName: name,
         photoURL: photo,
       });
 
-      // Sign out immediately
+    
+      await user.reload();
+
+     
       await signOut(auth);
 
-      // Success toast
       Swal.fire({
         icon: "success",
         title: `Welcome, ${name}!`,
-        text: "Your account has been created successfully. Please sign in to continue.",
+        text: "Your account has been created successfully. Please sign in.",
         toast: true,
         position: "top-end",
         showConfirmButton: false,
@@ -70,7 +77,8 @@ const Register = () => {
       });
 
       form.reset();
-      navigate("/login"); // সরাসরি login page এ নিয়ে যাবে
+      navigate("/login");
+
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -111,7 +119,7 @@ const Register = () => {
             <input
               type="text"
               name="photo"
-              placeholder="Enter your photo URL"
+              placeholder="Enter your photo URL (optional)"
               className="input input-bordered w-full bg-gray-100 text-gray-800"
             />
           </div>
