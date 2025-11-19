@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthenticationContext } from "../contexts/AuthContext";
+import Loading from "../Components/Loading";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const VehicleDetails = () => {
       });
 
       const data = await res.json();
-console.log(data)
+
       if (data.success) {
         Swal.fire("Success", "Booking completed successfully!", "success");
         navigate("/my-booking");
@@ -90,7 +91,7 @@ console.log(data)
     });
   };
 
-  if (loading) return <div className="text-center mt-10 text-xl font-semibold">Loading...</div>;
+  if (loading) return <div className="text-center mt-10 text-xl font-semibold"><Loading></Loading></div>;
   if (!travel) return <div className="text-center text-xl text-red-600">No vehicle found!</div>;
 
   return (

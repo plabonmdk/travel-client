@@ -26,7 +26,7 @@ const VehicleCard = ({ travel }) => {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.03, y: -5 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="bg-white shadow-xl rounded-2xl overflow-hidden border hover:shadow-2xl transition-all duration-300 w-full"
+      className="bg-white mt-25 shadow-xl rounded-2xl overflow-hidden border hover:shadow-2xl transition-all duration-300 w-full"
     >
       {/* IMAGE */}
       <div className="relative">

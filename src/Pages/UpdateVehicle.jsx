@@ -1,10 +1,24 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthenticationContext } from "../contexts/AuthContext";
+import Loading from "../Components/Loading";
+
+const fieldConfig = [
+  { name: "vehicleName", label: "Vehicle Name", type: "text" },
+  { name: "owner", label: "Owner", type: "text" },
+  { name: "category", label: "Category", type: "text" },
+  { name: "pricePerDay", label: "Price Per Day", type: "number" },
+  { name: "location", label: "Location", type: "text" },
+  { name: "availability", label: "Availability", type: "select", options: ["Available", "Booked"] },
+  { name: "description", label: "Description", type: "textarea" },
+  { name: "coverImage", label: "Cover Image URL", type: "text" },
+  { name: "categories", label: "Categories", type: "text" },
+];
 
 const UpdateVehicle = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useContext(AuthenticationContext);
   const [travel, setTravel] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,15 +28,15 @@ const UpdateVehicle = () => {
 
     const fetchVehicle = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/my-vehicles?email=${id}`, {
+        const res = await fetch(`http://localhost:3000/travel/${id}`, {
           headers: {
             authorization: `Bearer ${user?.accessToken}`,
           },
         });
+
         const data = await res.json();
         setTravel(data.result);
       } catch (err) {
-        console.error(err);
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -39,17 +53,12 @@ const UpdateVehicle = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      vehicleName: e.target.vehicleName.value,
-      owner: e.target.owner.value,
-      category: e.target.category.value,
-      pricePerDay: Number(e.target.pricePerDay.value),
-      location: e.target.location.value,
-      availability: e.target.availability.value,
-      description: e.target.description.value,
-      coverImage: e.target.coverImage.value,
-      categories: e.target.categories.value,
-    };
+    const formData = {};
+    fieldConfig.forEach((field) => {
+      let value = e.target[field.name].value;
+      if (field.type === "number") value = Number(value);
+      formData[field.name] = value;
+    });
 
     try {
       const res = await fetch(`http://localhost:3000/travel/${id}`, {
@@ -63,10 +72,17 @@ const UpdateVehicle = () => {
       if (result.success) {
         Swal.fire({
           icon: "success",
-          title: "Updated!",
+          title: "Updated Successfully!",
           text: "Vehicle updated successfully!",
-          confirmButtonColor: "#3085d6",
+          timer: 1500,
+          showConfirmButton: false,
         });
+
+      
+        setTimeout(() => {
+          navigate(`/vehicle-details/${id}`);
+        }, 1500);
+
       } else {
         Swal.fire({
           icon: "error",
@@ -75,7 +91,6 @@ const UpdateVehicle = () => {
         });
       }
     } catch (err) {
-      console.error(err);
       Swal.fire({
         icon: "error",
         title: "Server Error",
@@ -85,117 +100,58 @@ const UpdateVehicle = () => {
   };
 
   if (loading) {
-    return <p className="text-center mt-10">Loading vehicle data...</p>;
+    return (
+      <p className="text-center mt-10">
+        <Loading />
+      </p>
+    );
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12">
       <div className="card bg-white w-full max-w-lg shadow-2xl rounded-2xl p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Update Vehicle</h2>
+
         {travel && (
           <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="label font-medium">Vehicle Name</label>
-              <input
-                type="text"
-                name="vehicleName"
-                defaultValue={travel.vehicleName}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
+            {fieldConfig.map((field) => (
+              <div key={field.name}>
+                <label className="label font-medium">{field.label}</label>
 
-            <div>
-              <label className="label font-medium">Owner</label>
-              <input
-                type="text"
-                name="owner"
-                defaultValue={travel.owner}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Category</label>
-              <input
-                type="text"
-                name="category"
-                defaultValue={travel.category}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Price Per Day</label>
-              <input
-                type="number"
-                name="pricePerDay"
-                defaultValue={travel.pricePerDay}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Location</label>
-              <input
-                type="text"
-                name="location"
-                defaultValue={travel.location}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Availability</label>
-              <select
-                name="availability"
-                defaultValue={travel.availability}
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              >
-                <option value="Available">Available</option>
-                <option value="Booked">Booked</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="label font-medium">Description</label>
-              <textarea
-                name="description"
-                defaultValue={travel.description}
-                required
-                className="input w-full rounded-2xl focus:border-0 focus:outline-gray-300 h-24 p-3"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Cover Image URL</label>
-              <input
-                type="text"
-                name="coverImage"
-                defaultValue={travel.coverImage}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="label font-medium">Categories</label>
-              <input
-                type="text"
-                name="categories"
-                defaultValue={travel.categories}
-                required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-300"
-              />
-            </div>
+                {field.type === "textarea" ? (
+                  <textarea
+                    name={field.name}
+                    defaultValue={travel[field.name]}
+                    required
+                    className="input w-full rounded-2xl h-24 p-3"
+                  />
+                ) : field.type === "select" ? (
+                  <select
+                    name={field.name}
+                    defaultValue={travel[field.name]}
+                    className="input w-full rounded-full"
+                  >
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    defaultValue={travel[field.name]}
+                    required
+                    className="input w-full rounded-full"
+                  />
+                )}
+              </div>
+            ))}
 
             <button
               type="submit"
-              className="btn w-full text-white mt-6 rounded-full bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700"
+              className="btn w-full text-white mt-6 rounded-full bg-gradient-to-r from-pink-500 to-red-600"
             >
               Update Vehicle
             </button>
